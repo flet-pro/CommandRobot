@@ -17,10 +17,12 @@ public class ArcadeDriveCmd extends CommandBase {
     private double speedMode = 0.5; 
     
 
-    public ArcadeDriveCmd(DriveSubsystem m_driveSubsystem, XboxController m_controller) {
+    public ArcadeDriveCmd(DriveSubsystem m_driveSubsystem, XboxController m_controller, double speed) {
         driveSubsystem = m_driveSubsystem;
         controller = m_controller;
         addRequirements(driveSubsystem);
+
+        speedMode = speed;
 
         // speedModeFunction = m_speedModeFunction;
     }

@@ -37,7 +37,7 @@ public class RobotContainer {
         // s_conveyer = new ConveyerSubsystem();
         // s_climb = new ClimbSubsystem();
 
-        c_arcadeDrive = new ArcadeDriveCmd(s_drive, controller);
+        c_arcadeDrive = new ArcadeDriveCmd(s_drive, controller, 0.5);
 
         configureSetDefaultCmd();
         configureButtonBindings();
@@ -48,7 +48,7 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        yButton.whileActiveContinuous(new ChangeDriveSpeedMode(c_arcadeDrive, 0.8));
+        yButton.whileActiveContinuous(new ChangeDriveSpeedMode(c_arcadeDrive, 2));
         xButton.whileActiveContinuous(new ChangeDriveSpeedMode(c_arcadeDrive, 0.25));
     }
 }
