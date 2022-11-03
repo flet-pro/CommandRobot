@@ -17,11 +17,11 @@ import frc.robot.subsystems.DriveSubsystem;
 
 
 public class RobotContainer {
-    private XboxController controller = new XboxController(0);
+    private XboxController controller = new XboxController(2);
 
     private DriveSubsystem s_drive;
-    private ConveyerSubsystem s_conveyer;
-    private ClimbSubsystem s_climb;
+    // private ConveyerSubsystem s_conveyer;
+    // private ClimbSubsystem s_climb;
 
     private ArcadeDriveCmd c_arcadeDrive;
 
@@ -34,8 +34,8 @@ public class RobotContainer {
 
     public RobotContainer() {
         s_drive = new DriveSubsystem();
-        s_conveyer = new ConveyerSubsystem();
-        s_climb = new ClimbSubsystem();
+        // s_conveyer = new ConveyerSubsystem();
+        // s_climb = new ClimbSubsystem();
 
         c_arcadeDrive = new ArcadeDriveCmd(s_drive, controller);
 
