@@ -12,6 +12,7 @@ public class ChangeDriveSpeedMode extends CommandBase {
     /** Creates a new ChangeDriveSpeedMode. */
     public ChangeDriveSpeedMode(ArcadeDriveCmd m_driveCmd, double m_speedMode) {
         driveCmd = m_driveCmd;
+        speedMode = m_speedMode;
     }
 
     // Called when the command is initially scheduled.
