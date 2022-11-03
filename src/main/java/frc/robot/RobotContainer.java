@@ -5,17 +5,61 @@
 package frc.robot;
 
 
-import edu.wpi.first.wpilibj2.command.Command;
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.subsystems.ConveyerSubsystem;
+import frc.robot.subsystems.DriveSubsystem;
 
 
 public class RobotContainer {
+    private XboxController controller = new XboxController(0);
+
+    private DriveSubsystem s_drive;
+    private ConveyerSubsystem s_conveyer;
+    private ClimbSubsystem s_climb;
+
+    private ArcadeDriveCmd c_arcadeDrive;
+
+    // private final Supplier<Double> = new Supplier<Double>(XboxController m_controller){
+    //     double get()
+    // }
 
     public RobotContainer() {
+        s_drive = new DriveSubsystem();
+        s_conveyer = new ConveyerSubsystem();
+        s_climb = new ClimbSubsystem();
+
+        c_arcadeDrive = new ArcadeDriveCmd(s_drive, controller, new speedModeFunction(controller));
+
+        configureSetDefaultCmd();
         configureButtonBindings();
     }
 
+    private void configureSetDefaultCmd() {
+        s_drive.setDefaultCommand(c_arcadeDrive);
+    }
+
     private void configureButtonBindings() {}
+}
 
+class speedModeFunction implements Supplier<Double> {
+    private XboxController controller;
 
-    public Command getAutonomousCommand() {}
+    speedModeFunction(XboxController m_controller){
+        controller = m_controller;
+    }
+
+    @Override
+    public Double get() {
+        if(controller.getYButton()){
+            return 0.5;
+        }else if(controller.getXButton()){
+            return 0.25;
+        }else{
+            return 0.8;
+        }
+    }
 }
