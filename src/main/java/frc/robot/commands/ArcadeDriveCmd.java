@@ -13,15 +13,16 @@ import frc.robot.subsystems.DriveSubsystem;
 public class ArcadeDriveCmd extends CommandBase {
     private DriveSubsystem driveSubsystem;
     private XboxController controller;
-    Supplier<Double> speedModeFunction;
+    // Supplier<Double> speedModeFunction;
+    private double speedMode = 0.5; 
+    
 
-    public ArcadeDriveCmd(DriveSubsystem m_driveSubsystem, XboxController m_controller, //
-                            Supplier<Double> m_speedModeFunction) {
+    public ArcadeDriveCmd(DriveSubsystem m_driveSubsystem, XboxController m_controller) {
         driveSubsystem = m_driveSubsystem;
         controller = m_controller;
         addRequirements(driveSubsystem);
 
-        speedModeFunction = m_speedModeFunction;
+        // speedModeFunction = m_speedModeFunction;
     }
 
     // Called when the command is initially scheduled.
@@ -31,8 +32,8 @@ public class ArcadeDriveCmd extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        driveSubsystem.setxSpeed(-1 * controller.getLeftY() * speedModeFunction.get());
-        driveSubsystem.setzRotation(controller.getRightX() * speedModeFunction.get());
+        driveSubsystem.setxSpeed(-1 * controller.getLeftY() * speedMode);
+        driveSubsystem.setzRotation(controller.getRightX() * speedMode);
     }
 
     // Called once the command ends or is interrupted.
@@ -43,5 +44,9 @@ public class ArcadeDriveCmd extends CommandBase {
     @Override
     public boolean isFinished() {
         return false;
+    }
+
+    public void setSpeedMode(double change){
+        speedMode *= change;
     }
 }
