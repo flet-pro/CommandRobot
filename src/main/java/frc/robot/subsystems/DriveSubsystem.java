@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class DriveSubsystem extends SubsystemBase {
     WPI_TalonSRX driveRightFrontMotor, driveLeftFrontMotor;
@@ -17,6 +20,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     private double xSpeed;
     private double zRotation;
+    private boolean pidDriveMode;
+    private double pidTargetPosition;
 
 
     public DriveSubsystem() {
@@ -30,7 +35,13 @@ public class DriveSubsystem extends SubsystemBase {
         driveRightBackMotor.follow(driveRightFrontMotor);
         driveLeftBackMotor.follow(driveLeftFrontMotor);
 
+        driveRightFrontMotor.setNeutralMode(NeutralMode.Brake);
+        driveLeftFrontMotor.setNeutralMode(NeutralMode.Brake);
+        driveRightBackMotor.setNeutralMode(NeutralMode.Brake);
+        driveLeftBackMotor.setNeutralMode(NeutralMode.Brake);
+
         drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
+        pidDriveMode = false;
     }
 
     public void setxSpeed(double xSpeed) {
@@ -41,8 +52,35 @@ public class DriveSubsystem extends SubsystemBase {
         this.zRotation = zRotation;
     }
 
+    public void setPidDriveMode(boolean m_pidDriveMode){
+        pidDriveMode = m_pidDriveMode;
+    }
+
+    public void setPidTargetPosition(double m_pidTargetPosition){
+        pidTargetPosition = m_pidTargetPosition;
+    }
     @Override
     public void periodic() {
-        drive.arcadeDrive(xSpeed, zRotation);
+        if (pidDriveMode){
+            driveToPosition(pidTargetPosition);
+        }else {
+            drive.arcadeDrive(xSpeed, zRotation);
+        }
+    }
+
+    private void driveToPosition(double targetPosition){
+        if(Math.abs(targetPosition) < Constants.PID.DRIVE_SHORT_THRESHOLD){
+            driveRightFrontMotor.selectProfileSlot(Constants.PID.DRIVE_SHORT_SLOT, Constants.PID.DRIVE_PID_INDEX);
+            driveLeftFrontMotor.selectProfileSlot(Constants.PID.DRIVE_SHORT_SLOT, Constants.PID.DRIVE_PID_INDEX);
+        }else {
+            driveRightFrontMotor.selectProfileSlot(Constants.PID.DRIVE_LONG_SLOT, Constants.PID.DRIVE_PID_INDEX);
+            driveLeftFrontMotor.selectProfileSlot(Constants.PID.DRIVE_LONG_SLOT, Constants.PID.DRIVE_PID_INDEX);
+        }
+        driveRightFrontMotor.set(ControlMode.Position, getPointsOfMeter(targetPosition));
+        driveLeftFrontMotor.set(ControlMode.Position, getPointsOfMeter(targetPosition));
+    }
+
+    private double getPointsOfMeter(double m_meter) {
+        return m_meter * Constants.PID.DRIVE_POINTS_PER_METER;
     }
 }

@@ -5,69 +5,41 @@
 package frc.robot;
 
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ClimbCmd;
+import frc.robot.commands.ConveyorCmd;
 import frc.robot.commands.ArcadeDriveCmd;
-import frc.robot.commands.ChangeDriveSpeedMode;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyerSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 
 
 public class RobotContainer {
-    private XboxController controller = new XboxController(2);
+    private final DriveSubsystem s_drive;
+    private final ConveyerSubsystem s_conveyor;
+    private final ClimbSubsystem s_climb;
 
-    private DriveSubsystem s_drive;
-    // private ConveyerSubsystem s_conveyer;
-    // private ClimbSubsystem s_climb;
-
-    private ArcadeDriveCmd c_arcadeDrive;
-
-    // private final Supplier<Double> = new Supplier<Double>(XboxController m_controller){
-    //     double get()
-    // }
-
-    private final JoystickButton yButton = new JoystickButton(controller, XboxController.Button.kY.value);
-    private final JoystickButton xButton = new JoystickButton(controller, XboxController.Button.kX.value);
+    private final JoystickButton yButton = new JoystickButton(IO.mainController, XboxController.Button.kY.value);
+    private final JoystickButton xButton = new JoystickButton(IO.mainController, XboxController.Button.kX.value);
 
     public RobotContainer() {
         s_drive = new DriveSubsystem();
-        // s_conveyer = new ConveyerSubsystem();
-        // s_climb = new ClimbSubsystem();
+        s_conveyor = new ConveyerSubsystem();
+        s_climb = new ClimbSubsystem();
 
-        c_arcadeDrive = new ArcadeDriveCmd(s_drive, controller, 0.5);
-
-        configureSetDefaultCmd();
+        setDefaultCmd();
         configureButtonBindings();
     }
 
-    private void configureSetDefaultCmd() {
-        s_drive.setDefaultCommand(c_arcadeDrive);
+    private void setDefaultCmd() {
+        s_drive.setDefaultCommand(new ArcadeDriveCmd(s_drive, Constants.DRIVE.DEFAULT_SPEED));
+        s_conveyor.setDefaultCommand(new ConveyorCmd(s_conveyor));
+        s_climb.setDefaultCommand(new ClimbCmd(s_climb));
     }
 
     private void configureButtonBindings() {
-        yButton.whileActiveContinuous(new ChangeDriveSpeedMode(c_arcadeDrive, 2));
-        xButton.whileActiveContinuous(new ChangeDriveSpeedMode(c_arcadeDrive, 0.25));
+        yButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.FAST_SPEED));
+        xButton.and(yButton.negate()).whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.SLOW_SPEED));
     }
 }
-
-// class speedModeFunction implements Supplier<Double> {
-//     private XboxController controller;
-
-//     speedModeFunction(XboxController m_controller){
-//         controller = m_controller;
-//     }
-
-//     @Override
-//     public Double get() {
-//         if(controller.getYButton()){
-//             return 0.5;
-//         }else if(controller.getXButton()){
-//             return 0.25;
-//         }else{
-//             return 0.8;
-//         }
-//     }
-// }
