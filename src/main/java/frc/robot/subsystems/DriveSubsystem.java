@@ -74,8 +74,12 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (pidDriveMode && pidDriveFinished){
-            driveToPosition(pidTargetPosition);
+            driveRightFrontMotor.setSelectedSensorPosition(0);
+            driveLeftFrontMotor.setSelectedSensorPosition(0);
+            driveLeftFrontMotor.setIntegralAccumulator(0);
+            driveRightFrontMotor.setIntegralAccumulator(0);
             pidDriveFinished = false;
+            driveToPosition(pidTargetPosition);
         } else if (!pidDriveFinished) {
             pidDriveFinished = judgePidDrive();
             pidDriveMode = !pidDriveFinished;
