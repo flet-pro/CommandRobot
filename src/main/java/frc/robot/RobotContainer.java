@@ -18,8 +18,8 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class RobotContainer {
     private final DriveSubsystem s_drive;
-    private final ConveyerSubsystem s_conveyor;
-    private final ClimbSubsystem s_climb;
+//    private final ConveyerSubsystem s_conveyor;
+//    private final ClimbSubsystem s_climb;
 
     private final JoystickButton yButton = new JoystickButton(IO.mainController, XboxController.Button.kY.value);
     private final JoystickButton xButton = new JoystickButton(IO.mainController, XboxController.Button.kX.value);
@@ -28,8 +28,8 @@ public class RobotContainer {
 
     public RobotContainer() {
         s_drive = new DriveSubsystem();
-        s_conveyor = new ConveyerSubsystem();
-        s_climb = new ClimbSubsystem();
+//        s_conveyor = new ConveyerSubsystem();
+//        s_climb = new ClimbSubsystem();
 
         setDefaultCmd();
         configureButtonBindings();
@@ -37,8 +37,8 @@ public class RobotContainer {
 
     private void setDefaultCmd() {
         s_drive.setDefaultCommand(new ArcadeDriveCmd(s_drive, Constants.DRIVE.DEFAULT_SPEED));
-        s_conveyor.setDefaultCommand(new ConveyorCmd(s_conveyor));
-        s_climb.setDefaultCommand(new ClimbCmd(s_climb));
+//        s_conveyor.setDefaultCommand(new ConveyorCmd(s_conveyor));
+//        s_climb.setDefaultCommand(new ClimbCmd(s_climb));
     }
 
     private void configureButtonBindings() {

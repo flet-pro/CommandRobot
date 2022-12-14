@@ -41,6 +41,11 @@ public class DriveSubsystem extends SubsystemBase {
         driveRightBackMotor.setNeutralMode(NeutralMode.Brake);
         driveLeftBackMotor.setNeutralMode(NeutralMode.Brake);
 
+        driveRightFrontMotor.configAllSettings(Constants.MotorConfigs.DriveRight);
+        driveLeftFrontMotor.configAllSettings(Constants.MotorConfigs.DriveLeft);
+        driveRightFrontMotor.setSensorPhase(true);
+        driveLeftFrontMotor.setSensorPhase(true);
+
         drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
         pidDriveMode = false;
         pidDriveFinished = true;
@@ -72,6 +77,7 @@ public class DriveSubsystem extends SubsystemBase {
             pidDriveFinished = false;
         } else if (!pidDriveFinished) {
             pidDriveFinished = judgePidDrive();
+            pidDriveMode = !pidDriveFinished;
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }

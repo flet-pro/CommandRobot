@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -57,6 +60,43 @@ public final class Constants {
         /** PID Drive の誤差の許容範囲(Tolerance)*/
         public static final double DRIVE_TOLERANCE = 0.1;
     }
+
+    public static final class MotorConfigs {
+        public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
+        public static final TalonSRXConfiguration DriveLeft= new TalonSRXConfiguration();
+        public static PIDController gyroPidController;
+    }
+
+    public static void ConstInit() {
+        MotorConfigs.DriveRight.slot0.kP = 0.051;
+        MotorConfigs.DriveRight.slot0.kI = 0.000006;
+        MotorConfigs.DriveRight.slot0.kD = 0.00054;
+        MotorConfigs.DriveRight.slot0.maxIntegralAccumulator = 1023*0.014/MotorConfigs.DriveRight.slot0.kI;
+
+        MotorConfigs.DriveLeft.slot0.kP = 0.048;
+        MotorConfigs.DriveLeft.slot0.kI = 0.000009;
+        MotorConfigs.DriveLeft.slot0.kD = 0.00054;
+        MotorConfigs.DriveLeft.slot0.maxIntegralAccumulator =  1023*0.014/MotorConfigs.DriveLeft.slot0.kI;
+
+        MotorConfigs.DriveRight.slot1.kP = 0.2;
+        MotorConfigs.DriveRight.slot1.kI = 0.004;
+        MotorConfigs.DriveRight.slot1.kD = 0.000;
+        MotorConfigs.DriveRight.slot1.maxIntegralAccumulator = 1023*0.1/MotorConfigs.DriveRight.slot1.kI;
+
+        MotorConfigs.DriveLeft.slot1.kP = 0.2;
+        MotorConfigs.DriveLeft.slot1.kI = 0.0004;
+        MotorConfigs.DriveLeft.slot1.kD = 0.000;
+        MotorConfigs.DriveLeft.slot1.maxIntegralAccumulator =  1023*0.1/MotorConfigs.DriveLeft.slot1.kI;
+
+
+        MotorConfigs.DriveRight.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+        MotorConfigs.DriveLeft.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+        MotorConfigs.gyroPidController = new PIDController(0.01, gyrokI, 0);
+        MotorConfigs.gyroPidController.setIntegratorRange(-0.1/gyrokI, 0.1/gyrokI);
+        MotorConfigs.gyroPidController.setTolerance(3);
+    }
+
+    public static final double gyrokI = 0.0021;
 }
 
 //TODO 内部クラス内の静的宣言 は言語レベル '11' ではサポートされていませんについて Units.inchesToMeters(6.0)を使うと出る模様
