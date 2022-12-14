@@ -85,6 +85,8 @@ public class DriveSubsystem extends SubsystemBase {
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }
+        System.out.println(pidDriveMode);
+        System.out.println(pidDriveFinished);
     }
 
     private void driveToPosition(double targetPosition){
