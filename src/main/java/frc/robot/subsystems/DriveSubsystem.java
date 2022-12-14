@@ -82,6 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
         } else if (pidDriveMode) {
             driveToPosition(pidTargetPosition);
             pidDriveFinished = judgePidDrive();
+            pidDriveMode = !pidDriveFinished;
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }
@@ -114,6 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private double getRightPosition(){
+        System.out.println(getMetersOfPoints(driveRightFrontMotor.getSelectedSensorPosition()));
         return getMetersOfPoints(driveRightFrontMotor.getSelectedSensorPosition());
     }
 
