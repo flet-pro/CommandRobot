@@ -26,6 +26,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     public DriveSubsystem() {
+        Constants.ConstInit();
         driveRightFrontMotor = new WPI_TalonSRX(0);
         driveLeftFrontMotor = new WPI_TalonSRX(2);
         driveRightBackMotor = new VictorSPX(1);
