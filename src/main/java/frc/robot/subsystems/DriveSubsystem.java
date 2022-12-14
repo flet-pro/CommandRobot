@@ -79,14 +79,14 @@ public class DriveSubsystem extends SubsystemBase {
             driveLeftFrontMotor.setIntegralAccumulator(0);
             driveRightFrontMotor.setIntegralAccumulator(0);
             pidDriveFinished = false;
+        } else if (pidDriveMode) {
             driveToPosition(pidTargetPosition);
-        } else if (!pidDriveFinished) {
             pidDriveFinished = judgePidDrive();
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }
-        System.out.println(pidDriveMode);
-        System.out.println(pidDriveFinished);
+//        System.out.println(pidDriveMode);
+//        System.out.println(pidDriveFinished);
     }
 
     private void driveToPosition(double targetPosition){
