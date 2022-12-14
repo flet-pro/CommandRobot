@@ -82,7 +82,6 @@ public class DriveSubsystem extends SubsystemBase {
             driveToPosition(pidTargetPosition);
         } else if (!pidDriveFinished) {
             pidDriveFinished = judgePidDrive();
-            pidDriveMode = !pidDriveFinished;
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }

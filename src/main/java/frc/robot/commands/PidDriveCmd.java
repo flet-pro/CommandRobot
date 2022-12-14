@@ -33,6 +33,6 @@ public class PidDriveCmd extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-
+        driveSubsystem.setPidDriveMode(false);
     }
 }
