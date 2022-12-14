@@ -18,12 +18,25 @@ public final class Constants {
     public final class PORT {
         public static final int MAIN_CONTROLLER = 0;
         public static final int SUB_CONTROLLER = 1;
+        public static final int ROLLER_MOTOR = 0;
+        public static final int ROLLER_SOLENOID = 3;
+        public static final int BELT_MOTOR = 4;
+        public static final int SHOOTER_MOTOR = 6;
     }
 
     public final class DRIVE {
         public static final double DEFAULT_SPEED = 0.5;
         public static final double FAST_SPEED = 0.8;
         public static final double SLOW_SPEED = 0.3;
+    }
+
+    public final class ROLLER{
+
+        public static final double DEFAULT_SPEED = 0.5;
+    }
+
+    public final class BELT{
+        public static final double DEFAULT_SPEED = 0.5;
     }
 
     public static final class PID {
@@ -41,6 +54,8 @@ public final class Constants {
          * 計算方法 : (エンコーダーが1回転あたりに数えるPoints) / (タイヤの円周[m])
          */
         public static final double DRIVE_POINTS_PER_METER = ENCODER_POINTS_PER_REVOLUTION / DRIVE_WHEEL_LENGTH;
+        /** PID Drive の誤差の許容範囲(Tolerance)*/
+        public static final double DRIVE_TOLERANCE = 0.1;
     }
 }
 

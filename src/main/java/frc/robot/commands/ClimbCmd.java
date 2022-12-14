@@ -14,7 +14,6 @@ public class ClimbCmd extends CommandBase {
 
     @Override
     public void initialize() {
-
     }
 
     @Override
@@ -24,7 +23,6 @@ public class ClimbCmd extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
         return false;
     }
 
@@ -33,3 +31,8 @@ public class ClimbCmd extends CommandBase {
 
     }
 }
+
+//TODO PIDControlの基本的な仕組みの勉強 https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/introduction-to-pid.html?highlight=PID
+//TODO PIDControlのライブラリの勉強 https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/pidcontroller.html
+
+//TODO VisionControlについて https://docs.wpilib.org/en/stable/docs/software/vision-processing/introduction/strategies-for-vision-programming.html

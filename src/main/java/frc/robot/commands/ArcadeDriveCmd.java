@@ -24,8 +24,8 @@ public class ArcadeDriveCmd extends CommandBase {
 
     @Override
     public void execute() {
-        driveSubsystem.setxSpeed(-1 * IO.mainController.getLeftY() * speedMode);
-        driveSubsystem.setzRotation(IO.mainController.getRightX() * speedMode);
+        driveSubsystem.setXSpeed(-1 * IO.mainController.getLeftY() * speedMode);
+        driveSubsystem.setZRotation(IO.mainController.getRightX() * speedMode);
     }
 
     @Override

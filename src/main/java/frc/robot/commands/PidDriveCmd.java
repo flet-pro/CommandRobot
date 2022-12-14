@@ -6,15 +6,19 @@ import frc.robot.subsystems.DriveSubsystem;
 
 public class PidDriveCmd extends CommandBase {
     private final DriveSubsystem driveSubsystem;
+    private final double targetPosition;
 
-    public PidDriveCmd(DriveSubsystem m_driveSubsystem) {
+    public PidDriveCmd(DriveSubsystem m_driveSubsystem, double m_targetPosition) {
         driveSubsystem = m_driveSubsystem;
         addRequirements(driveSubsystem);
+
+        targetPosition = m_targetPosition;
     }
 
     @Override
     public void initialize() {
-
+        driveSubsystem.setPidDriveMode(true);
+        driveSubsystem.setPidTargetPosition(targetPosition);
     }
 
     @Override
@@ -24,7 +28,7 @@ public class PidDriveCmd extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return false;
+        return driveSubsystem.getPidDriveFinished();
     }
 
     @Override

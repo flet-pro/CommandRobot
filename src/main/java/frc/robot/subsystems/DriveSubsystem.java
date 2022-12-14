@@ -21,6 +21,7 @@ public class DriveSubsystem extends SubsystemBase {
     private double xSpeed;
     private double zRotation;
     private boolean pidDriveMode;
+    private boolean pidDriveFinished;
     private double pidTargetPosition;
 
 
@@ -42,13 +43,14 @@ public class DriveSubsystem extends SubsystemBase {
 
         drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
         pidDriveMode = false;
+        pidDriveFinished = true;
     }
 
-    public void setxSpeed(double xSpeed) {
+    public void setXSpeed(double xSpeed) {
         this.xSpeed = xSpeed;
     }
 
-    public void setzRotation(double zRotation) {
+    public void setZRotation(double zRotation) {
         this.zRotation = zRotation;
     }
 
@@ -59,11 +61,18 @@ public class DriveSubsystem extends SubsystemBase {
     public void setPidTargetPosition(double m_pidTargetPosition){
         pidTargetPosition = m_pidTargetPosition;
     }
+
+    public boolean getPidDriveFinished(){
+        return pidDriveFinished;
+    }
     @Override
     public void periodic() {
-        if (pidDriveMode){
+        if (pidDriveMode && pidDriveFinished){
             driveToPosition(pidTargetPosition);
-        }else {
+            pidDriveFinished = false;
+        } else if (!pidDriveFinished) {
+            pidDriveFinished = judgePidDrive();
+        } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }
     }
@@ -76,11 +85,34 @@ public class DriveSubsystem extends SubsystemBase {
             driveRightFrontMotor.selectProfileSlot(Constants.PID.DRIVE_LONG_SLOT, Constants.PID.DRIVE_PID_INDEX);
             driveLeftFrontMotor.selectProfileSlot(Constants.PID.DRIVE_LONG_SLOT, Constants.PID.DRIVE_PID_INDEX);
         }
-        driveRightFrontMotor.set(ControlMode.Position, getPointsOfMeter(targetPosition));
-        driveLeftFrontMotor.set(ControlMode.Position, getPointsOfMeter(targetPosition));
+        driveRightFrontMotor.set(ControlMode.Position, getPointsOfMeters(targetPosition));
+        driveLeftFrontMotor.set(ControlMode.Position, getPointsOfMeters(targetPosition));
     }
 
-    private double getPointsOfMeter(double m_meter) {
-        return m_meter * Constants.PID.DRIVE_POINTS_PER_METER;
+    private double getPointsOfMeters(double m_meters) {
+        return m_meters * Constants.PID.DRIVE_POINTS_PER_METER;
+    }
+
+    private double getMetersOfPoints(double m_points){
+        return m_points / Constants.PID.DRIVE_POINTS_PER_METER;
+    }
+
+    private boolean judgePidDrive(){
+        return judgeRightPosition() && judgeLeftPosition();
+    }
+
+    private double getRightPosition(){
+        return getMetersOfPoints(driveRightFrontMotor.getSelectedSensorPosition());
+    }
+
+    private boolean judgeRightPosition(){
+        return Math.abs(getRightPosition() - pidTargetPosition) < Constants.PID.DRIVE_TOLERANCE;
+    }
+
+    private double getLeftPosition(){
+        return getMetersOfPoints(driveLeftFrontMotor.getSelectedSensorPosition());
+    }
+    private boolean judgeLeftPosition(){
+        return Math.abs(getLeftPosition() - pidTargetPosition) < Constants.PID.DRIVE_TOLERANCE;
     }
 }

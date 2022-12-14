@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ClimbCmd;
 import frc.robot.commands.ConveyorCmd;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.PidDriveCmd;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyerSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -22,6 +23,8 @@ public class RobotContainer {
 
     private final JoystickButton yButton = new JoystickButton(IO.mainController, XboxController.Button.kY.value);
     private final JoystickButton xButton = new JoystickButton(IO.mainController, XboxController.Button.kX.value);
+    private final JoystickButton aButton = new JoystickButton(IO.mainController, XboxController.Button.kA.value);
+    private final JoystickButton bButton = new JoystickButton(IO.mainController, XboxController.Button.kB.value);
 
     public RobotContainer() {
         s_drive = new DriveSubsystem();
@@ -39,7 +42,8 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        yButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.FAST_SPEED));
-        xButton.and(yButton.negate()).whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.SLOW_SPEED));
+        yButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.FAST_SPEED), false);
+        xButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.SLOW_SPEED), false);
+        aButton.whenPressed(new PidDriveCmd(s_drive, 10), false);
     }
 }
