@@ -61,39 +61,39 @@ public final class Constants {
         public static final double DRIVE_TOLERANCE = 0.1;
     }
 
-    public static final class MotorConfigs {
-        public static final TalonSRXConfiguration DriveRight = new TalonSRXConfiguration();
-        public static final TalonSRXConfiguration DriveLeft= new TalonSRXConfiguration();
+    public static final class MOTOR_CONFIGS {
+        public static final TalonSRXConfiguration DRIVE_RIGHT = new TalonSRXConfiguration();
+        public static final TalonSRXConfiguration DRIVE_LEFT = new TalonSRXConfiguration();
         public static PIDController gyroPidController;
     }
 
-    public static void ConstInit() {
-        MotorConfigs.DriveRight.slot0.kP = 0.051;
-        MotorConfigs.DriveRight.slot0.kI = 0.000006;
-        MotorConfigs.DriveRight.slot0.kD = 0.00054;
-        MotorConfigs.DriveRight.slot0.maxIntegralAccumulator = 1023*0.014/MotorConfigs.DriveRight.slot0.kI;
+    public static void motorConfigsInit() {
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot0.kP = 0.051;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot0.kI = 0.000006;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot0.kD = 0.00054;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot0.maxIntegralAccumulator = 1023*0.014/ MOTOR_CONFIGS.DRIVE_RIGHT.slot0.kI;
 
-        MotorConfigs.DriveLeft.slot0.kP = 0.048;
-        MotorConfigs.DriveLeft.slot0.kI = 0.000009;
-        MotorConfigs.DriveLeft.slot0.kD = 0.00054;
-        MotorConfigs.DriveLeft.slot0.maxIntegralAccumulator =  1023*0.014/MotorConfigs.DriveLeft.slot0.kI;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot0.kP = 0.048;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot0.kI = 0.000009;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot0.kD = 0.00054;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot0.maxIntegralAccumulator =  1023*0.014/ MOTOR_CONFIGS.DRIVE_LEFT.slot0.kI;
 
-        MotorConfigs.DriveRight.slot1.kP = 0.2;
-        MotorConfigs.DriveRight.slot1.kI = 0.004;
-        MotorConfigs.DriveRight.slot1.kD = 0.000;
-        MotorConfigs.DriveRight.slot1.maxIntegralAccumulator = 1023*0.1/MotorConfigs.DriveRight.slot1.kI;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot1.kP = 0.2;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot1.kI = 0.004;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot1.kD = 0.000;
+        MOTOR_CONFIGS.DRIVE_RIGHT.slot1.maxIntegralAccumulator = 1023*0.1/ MOTOR_CONFIGS.DRIVE_RIGHT.slot1.kI;
 
-        MotorConfigs.DriveLeft.slot1.kP = 0.2;
-        MotorConfigs.DriveLeft.slot1.kI = 0.0004;
-        MotorConfigs.DriveLeft.slot1.kD = 0.000;
-        MotorConfigs.DriveLeft.slot1.maxIntegralAccumulator =  1023*0.1/MotorConfigs.DriveLeft.slot1.kI;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot1.kP = 0.2;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot1.kI = 0.0004;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot1.kD = 0.000;
+        MOTOR_CONFIGS.DRIVE_LEFT.slot1.maxIntegralAccumulator =  1023*0.1/ MOTOR_CONFIGS.DRIVE_LEFT.slot1.kI;
 
 
-        MotorConfigs.DriveRight.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
-        MotorConfigs.DriveLeft.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
-        MotorConfigs.gyroPidController = new PIDController(0.01, gyrokI, 0);
-        MotorConfigs.gyroPidController.setIntegratorRange(-0.1/gyrokI, 0.1/gyrokI);
-        MotorConfigs.gyroPidController.setTolerance(3);
+        MOTOR_CONFIGS.DRIVE_RIGHT.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+        MOTOR_CONFIGS.DRIVE_LEFT.primaryPID.selectedFeedbackSensor = FeedbackDevice.CTRE_MagEncoder_Relative;
+        MOTOR_CONFIGS.gyroPidController = new PIDController(0.01, gyrokI, 0);
+        MOTOR_CONFIGS.gyroPidController.setIntegratorRange(-0.1/gyrokI, 0.1/gyrokI);
+        MOTOR_CONFIGS.gyroPidController.setTolerance(3);
     }
 
     public static final double gyrokI = 0.0021;

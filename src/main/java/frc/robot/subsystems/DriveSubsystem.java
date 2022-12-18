@@ -26,7 +26,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 
     public DriveSubsystem() {
-        Constants.ConstInit();
+        Constants.motorConfigsInit();
         driveRightFrontMotor = new WPI_TalonSRX(0);
         driveLeftFrontMotor = new WPI_TalonSRX(2);
         driveRightBackMotor = new VictorSPX(1);
@@ -42,8 +42,8 @@ public class DriveSubsystem extends SubsystemBase {
         driveRightBackMotor.setNeutralMode(NeutralMode.Brake);
         driveLeftBackMotor.setNeutralMode(NeutralMode.Brake);
 
-        driveRightFrontMotor.configAllSettings(Constants.MotorConfigs.DriveRight);
-        driveLeftFrontMotor.configAllSettings(Constants.MotorConfigs.DriveLeft);
+        driveRightFrontMotor.configAllSettings(Constants.MOTOR_CONFIGS.DRIVE_RIGHT);
+        driveLeftFrontMotor.configAllSettings(Constants.MOTOR_CONFIGS.DRIVE_LEFT);
         driveRightFrontMotor.setSensorPhase(true);
         driveLeftFrontMotor.setSensorPhase(true);
 
@@ -60,10 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
         this.zRotation = zRotation;
     }
 
-    public void setPidDriveMode(boolean m_pidDriveMode){
-        pidDriveMode = m_pidDriveMode;
-    }
-
     public void setPidTargetPosition(double m_pidTargetPosition){
         pidTargetPosition = m_pidTargetPosition;
     }
@@ -71,23 +67,30 @@ public class DriveSubsystem extends SubsystemBase {
     public boolean getPidDriveFinished(){
         return pidDriveFinished;
     }
+
+    public void setPidDriveFinished(boolean m_pidDriveFinished){
+        pidDriveFinished = m_pidDriveFinished;
+    }
+
+    public void setPidDriveMode(boolean m_pidDriveMode){
+        pidDriveMode = m_pidDriveMode;
+    }
+
+    public void pidReset(){
+        driveRightFrontMotor.setSelectedSensorPosition(0);
+        driveLeftFrontMotor.setSelectedSensorPosition(0);
+        driveLeftFrontMotor.setIntegralAccumulator(0);
+        driveRightFrontMotor.setIntegralAccumulator(0);
+    }
+
     @Override
     public void periodic() {
-        if (pidDriveMode && pidDriveFinished){
-            driveRightFrontMotor.setSelectedSensorPosition(0);
-            driveLeftFrontMotor.setSelectedSensorPosition(0);
-            driveLeftFrontMotor.setIntegralAccumulator(0);
-            driveRightFrontMotor.setIntegralAccumulator(0);
-            pidDriveFinished = false;
-        } else if (pidDriveMode) {
+        if (pidDriveMode) {
             driveToPosition(pidTargetPosition);
             pidDriveFinished = judgePidDrive();
-            pidDriveMode = !pidDriveFinished;
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }
-//        System.out.println(pidDriveMode);
-//        System.out.println(pidDriveFinished);
     }
 
     private void driveToPosition(double targetPosition){

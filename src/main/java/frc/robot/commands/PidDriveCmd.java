@@ -18,19 +18,18 @@ public class PidDriveCmd extends CommandBase {
     @Override
     public void initialize() {
         driveSubsystem.setPidDriveMode(true);
+        driveSubsystem.setPidDriveFinished(false);
+        driveSubsystem.pidReset();
         driveSubsystem.setPidTargetPosition(targetPosition);
-        System.out.println(923849);
     }
 
     @Override
     public void execute() {
-        System.out.println(123);
     }
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println(111111111);
-        // driveSubsystem.setPidDriveMode(false);
+        driveSubsystem.setPidDriveMode(false);
     }
 
     @Override
