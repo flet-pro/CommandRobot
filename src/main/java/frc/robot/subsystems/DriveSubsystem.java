@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -17,16 +18,21 @@ public class DriveSubsystem extends SubsystemBase {
     WPI_TalonSRX driveRightFrontMotor, driveLeftFrontMotor;
     VictorSPX driveRightBackMotor, driveLeftBackMotor;
     DifferentialDrive drive;
+    ADXRS450_Gyro gyro;
 
     private double xSpeed;
     private double zRotation;
     private boolean pidDriveMode;
     private boolean pidDriveFinished;
     private double pidTargetPosition;
+    private boolean gyroDriveMode;
+    private double gyroTargetDirection;
+    private boolean gyroDriveFinished;
 
 
     public DriveSubsystem() {
         Constants.motorConfigsInit();
+        gyroInit();
         driveRightFrontMotor = new WPI_TalonSRX(0);
         driveLeftFrontMotor = new WPI_TalonSRX(2);
         driveRightBackMotor = new VictorSPX(1);
@@ -50,6 +56,10 @@ public class DriveSubsystem extends SubsystemBase {
         drive = new DifferentialDrive(driveLeftFrontMotor, driveRightFrontMotor);
         pidDriveMode = false;
         pidDriveFinished = true;
+
+        gyro = new ADXRS450_Gyro();
+        gyroDriveMode = false;
+        gyroDriveFinished = true;
     }
 
     public void setXSpeed(double xSpeed) {
@@ -76,6 +86,22 @@ public class DriveSubsystem extends SubsystemBase {
         pidDriveMode = m_pidDriveMode;
     }
 
+    public void setGyroTargetDirection(double m_geroTargetDirection){
+        gyroTargetDirection = m_geroTargetDirection;
+    }
+
+    public void setGyroDriveFinished(boolean m_gyroDriveFinished){
+        gyroDriveFinished = m_gyroDriveFinished;
+    }
+
+    public boolean getGyroDriveFinished(){
+        return gyroDriveFinished;
+    }
+
+    public void setGyroDriveMode(boolean m_gyroDriveMode){
+        gyroDriveMode = m_gyroDriveMode;
+    }
+
     public void pidReset(){
         driveRightFrontMotor.setSelectedSensorPosition(0);
         driveLeftFrontMotor.setSelectedSensorPosition(0);
@@ -83,11 +109,17 @@ public class DriveSubsystem extends SubsystemBase {
         driveRightFrontMotor.setIntegralAccumulator(0);
     }
 
+    public void gyroReset(){
+        gyro.reset();
+    }
+
     @Override
     public void periodic() {
         if (pidDriveMode) {
             driveToPosition(pidTargetPosition);
             pidDriveFinished = judgePidDrive();
+        } else if (gyroDriveMode) {
+            System.out.println(gyro.getAngle());
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
         }
@@ -131,5 +163,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
     private boolean judgeLeftPosition(){
         return Math.abs(getLeftPosition() - pidTargetPosition) < Constants.PID.DRIVE_TOLERANCE;
+    }
+    private void gyroInit(){
+        gyro.reset();
+        gyro.calibrate();
     }
 }
