@@ -41,7 +41,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         yButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.FAST_SPEED), false);
         xButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.SLOW_SPEED), false);
-        aButton.whenPressed(new PidDriveCmd(s_drive, -0.2), false);
-        bButton.whenPressed(new GyroDriveCmd(s_drive, 10), false);
+        aButton.whenPressed(new PidDriveCmd(s_drive, -0.2));
+        bButton.whenPressed(new GyroDriveCmd(s_drive, 10));
     }
 }
