@@ -7,10 +7,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ClimbCmd;
-import frc.robot.commands.ConveyorCmd;
-import frc.robot.commands.ArcadeDriveCmd;
-import frc.robot.commands.PidDriveCmd;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.subsystems.ConveyerSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
@@ -45,5 +42,6 @@ public class RobotContainer {
         yButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.FAST_SPEED), false);
         xButton.whileActiveContinuous(new ArcadeDriveCmd(s_drive, Constants.DRIVE.SLOW_SPEED), false);
         aButton.whenPressed(new PidDriveCmd(s_drive, -0.2), false);
+        bButton.whenPressed(new GyroDriveCmd(s_drive, 10), false);
     }
 }
