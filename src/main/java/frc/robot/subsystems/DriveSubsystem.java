@@ -120,6 +120,7 @@ public class DriveSubsystem extends SubsystemBase {
             pidDriveFinished = judgePidDrive();
         } else if (gyroDriveMode) {
             turnTo(gyroTargetDirection);
+            gyroDriveFinished = judgeGyroDirection();
             System.out.println(gyro.getAngle());
         } else {
             drive.arcadeDrive(xSpeed, zRotation);
@@ -165,9 +166,13 @@ public class DriveSubsystem extends SubsystemBase {
     private boolean judgeLeftPosition(){
         return Math.abs(getLeftPosition() - pidTargetPosition) < Constants.PID.DRIVE_TOLERANCE;
     }
-    private void gyroInit(){
+    private void gyroInit() {
         gyro.reset();
         gyro.calibrate();
+    }
+
+    private boolean judgeGyroDirection(){
+        return Constants.MOTOR_CONFIGS.gyroPidController.atSetpoint();
     }
 
     public void turnTo(double direction) {
